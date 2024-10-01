@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //TokenOption ile nesneyi eslestirdik
 builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOption"));
-builder.Services.Configure<Client>(builder.Configuration.GetSection("TokenOption"));
+builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
