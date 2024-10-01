@@ -93,7 +93,30 @@ namespace AuthServer.Service.Services
 
         public ClientTokenDto CreateTokenByClient(Client client)
         {
-            throw new NotImplementedException();
+            var accesTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
+
+            var securityKey = SignService.GetSymmetricSecurityKey(_tokenOptions.SecurityKey);
+
+            //imza olustur, security key ile istedigin algoritmayı secebilirsin
+            SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+               issuer: _tokenOptions.Issuer,
+               expires: accesTokenExpiration,
+               notBefore: DateTime.Now,
+               claims: GetClaimsByClient(client),
+               signingCredentials: signingCredentials
+            );
+
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.WriteToken(jwtSecurityToken);
+            var tokenDto = new ClientTokenDto
+            {
+                AccessToken = token,
+                AccessTokenExpiration = accesTokenExpiration,
+            };
+
+            return tokenDto;
         }
     }
 }
