@@ -66,7 +66,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateLifetime = true,
 
-        //token icin dogrulama 1 saatte +5dk(default) verir 65dk olur, engellemek icin
+        //token icin dogrulama 1 saatte +5dk(default) verir 65dk olur,
+        //bu sekilde tam zamanýnda kontrol eder
         ClockSkew = TimeSpan.Zero
     };
 });
