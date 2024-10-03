@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AuthServer.SharedLibrary.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
