@@ -11,17 +11,18 @@ namespace MiniApp1.API.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
+        [HttpGet]
         public IActionResult GetStock()
         {
             var userName = HttpContext.User.Identity.Name;
 
             //username degilde id almak istesek
             //service kısmında token olusturuken, id yi ClaimTypes.NameIdentifier 'e yazdık
-            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
             var userEmail = User.Claims.FirstOrDefault(x=>x.Type == JwtRegisteredClaimNames.Email);
 
-            return Ok($"Stock -> UserName: {userName} - UserId: {userId} - UserEmail: {userEmail}");
+            return Ok($"Stock -> UserName: {userName} - UserId: {userIdClaim.Value} - UserEmail: {userEmail}");
 
         }
     }
