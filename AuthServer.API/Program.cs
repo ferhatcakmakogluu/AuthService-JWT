@@ -14,6 +14,10 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AuthServer.SharedLibrary.Services;
+using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
+using AuthServer.API.Validations;
+using AuthServer.SharedLibrary.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +38,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         sqlOptions.MigrationsAssembly("AuthServer.Data");
     });
 });
+
+
 
 builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 {
@@ -73,7 +79,20 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllers();
+
+
+builder.Services.AddControllers()
+    .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUserDtoValidator>());
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
+builder.Services.UseAddCustomValidationResponse();
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

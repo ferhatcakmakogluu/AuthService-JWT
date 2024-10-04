@@ -25,5 +25,12 @@ namespace MiniApp2.API.Controllers
             return Ok($"Invoice -> UserName: {userName} - UserId: {userIdClaim.Value} - UserEmail: {userEmail}");
 
         }
+
+        [HttpGet("[action]")]
+        public IActionResult GetInvoiceExample()
+        {
+            return Ok("Auth now");
+
+        }
     }
 }
