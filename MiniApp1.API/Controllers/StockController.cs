@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace MiniApp1.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class StockController : ControllerBase
@@ -20,9 +20,9 @@ namespace MiniApp1.API.Controllers
             //service kısmında token olusturuken, id yi ClaimTypes.NameIdentifier 'e yazdık
             var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            var userEmail = User.Claims.FirstOrDefault(x=>x.Type == JwtRegisteredClaimNames.Email);
+            var userEmail = User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.Email);
 
-            return Ok($"Stock -> UserName: {userName} - UserId: {userIdClaim.Value} - UserEmail: {userEmail}");
+            return Ok($"Stock -> UserName: {userName} - UserId: {userIdClaim.Value} - UserEmail: {userEmail.Value}");
 
         }
     }
