@@ -1,5 +1,8 @@
 using AuthServer.SharedLibrary.Configurations;
 using AuthServer.SharedLibrary.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using MiniApp1.API.ClaimRequirements;
+using static MiniApp1.API.ClaimRequirements.BirthdayRequirement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +13,18 @@ var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTok
 
 builder.Services.AddCustomTokenAuth(tokenOptions);
 
+builder.Services.AddScoped<IAuthorizationHandler, BirthdayRequrenmentHandler>();
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("TrabzonPolicy",policy =>
+    options.AddPolicy("ZonguldakPolicy",policy =>
     {
-        policy.RequireClaim("City","Trabzon");
+        policy.RequireClaim("City","Zonguldak");
+    });
+
+    options.AddPolicy("AgePolicy", policy =>
+    {
+        policy.Requirements.Add(new BirthdayRequirement(18));
     });
 });
 

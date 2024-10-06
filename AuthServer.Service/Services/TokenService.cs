@@ -48,7 +48,8 @@ namespace AuthServer.Service.Services
                 new Claim(JwtRegisteredClaimNames.Email, userApp.Email),//farkli yontem, ClaimTypes ile de olur
                 new Claim(ClaimTypes.Name, userApp.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()), //random deger, clain icin,
-                new Claim("City",userApp.City) //token payload a city ekledik, city üzerinden erisim yapmak icin
+                new Claim("City",userApp.City), //token payload a city ekledik, city üzerinden erisim yapmak icin
+                new Claim("Birth-Date", userApp.BirthDay.ToString())
             };
 
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));

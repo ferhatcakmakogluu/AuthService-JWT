@@ -6,7 +6,8 @@ using System.Security.Claims;
 
 namespace MiniApp1.API.Controllers
 {
-    [Authorize(Roles ="admin", Policy = "TrabzonPolicy")]
+    [Authorize(Policy = "AgePolicy")]
+    [Authorize(Roles ="admin", Policy = "ZonguldakPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class StockController : ControllerBase

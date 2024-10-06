@@ -11,5 +11,6 @@ namespace AuthServer.Core.Entitiy
     {
         //other properties will come default
         public string City { get; set; }
+        public DateTime BirthDay { get; set; }
     }
 }
