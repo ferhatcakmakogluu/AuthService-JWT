@@ -10,6 +10,15 @@ var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTok
 
 builder.Services.AddCustomTokenAuth(tokenOptions);
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("TrabzonPolicy",policy =>
+    {
+        policy.RequireClaim("City","Trabzon");
+    });
+});
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
