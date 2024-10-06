@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using FluentValidation.AspNetCore;
 using AuthServer.API.Validations;
 using AuthServer.SharedLibrary.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,14 +82,10 @@ builder.Services.AddAuthentication(options =>
 
 
 
-builder.Services.AddControllers()
-    .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUserDtoValidator>());
-
-builder.Services.Configure<ApiBehaviorOptions>(options =>
+builder.Services.AddControllers().AddFluentValidation(opt =>
 {
-    options.SuppressModelStateInvalidFilter = true;
+    opt.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
-
 builder.Services.UseAddCustomValidationResponse();
 
 

@@ -37,8 +37,11 @@ namespace AuthServer.Service.Services
             return Convert.ToBase64String(numberByte);
         }
 
-        private IEnumerable<Claim> GetClaims(UserApp userApp, List<String> audiences)
+        private async Task<IEnumerable<Claim>> GetClaims(UserApp userApp, List<String> audiences)
         {
+            var userRoles = await _userManager.GetRolesAsync(userApp);
+            //["admin","manager"]...
+
             var userList = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userApp.Id),
@@ -48,6 +51,7 @@ namespace AuthServer.Service.Services
             };
 
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
+            userList.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role, x)));
             return userList;
         }
 
@@ -75,7 +79,7 @@ namespace AuthServer.Service.Services
                issuer: _tokenOptions.Issuer,
                expires: accesTokenExpiration,
                notBefore: DateTime.Now,
-               claims: GetClaims(userApp,_tokenOptions.Audience),
+               claims: GetClaims(userApp,_tokenOptions.Audience).Result,
                signingCredentials: signingCredentials
             );
 
